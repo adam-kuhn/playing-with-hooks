@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 
 const possibleName = ["John", "Adam", "Elisa", "Jane"]
 
@@ -8,12 +8,24 @@ const getRandomNumber = () => {
   return randomNumber
 }
 
+const usePrevious = (value) => {
+  const ref = useRef()
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
+}
 
 
 const HookSomething = () => {
   const [nameObj, setNameObj] = useState({name: possibleName[0], clicks: 0})
+  const prevName = usePrevious(nameObj.name)
   useEffect(() => {
-    alert(`hello ${nameObj.name.toUpperCase()}!!!!!`)
+    if (prevName === nameObj.name) {
+      alert(`Sorry, your name did not change, you are still ${prevName}`)
+    } else {
+      alert(`hello ${nameObj.name.toUpperCase()}!!!!!`)
+    }
   })
   return (
     <div>
